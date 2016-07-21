@@ -4,6 +4,10 @@ import (
 	"log"
 	"net/http"
 	"github.com/gorilla/websocket"
+	"encoding/json"
+	"github.com/whitesmith/powered-plants-web/models"
+	"github.com/whitesmith/powered-plants-web/connections"
+	"github.com/whitesmith/powered-plants-web/core"
 )
 
 var wsupgrader = websocket.Upgrader{
@@ -22,13 +26,16 @@ func ConnectDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Receive messages from device
-	for {
-		_, msg, err := conn.ReadMessage()
-		if err != nil {
-			break
-		}
-		log.Printf("Received Message: %s", msg)
-		//conn.WriteMessage(t, msg)
+	connection := connections.Connection{
+		Conn: conn,
 	}
+
+	for {
+		message, err := connection.ReceiveMessage()
+		if err != nil {
+			return
+		}
+		log.Printf("%+v", message)
+	}
+	
 }

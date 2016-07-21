@@ -8,7 +8,7 @@ import (
 )
 
 var origin = "http://localhost/"
-var url = "ws://localhost:8080/control"
+var url = "ws://localhost:8080/"
 
 func main() {
 	ws, err := websocket.Dial(url, "", origin)
@@ -16,7 +16,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	message := []byte("hello, world!")
+	message := []byte(`{"sT":26.37,"eH":54.80,"eT":26.40,"lT":4036,"lI":637,"sH":16}`)
 	_, err = ws.Write(message)
 	if err != nil {
 		log.Fatal(err)
