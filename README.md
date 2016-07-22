@@ -9,7 +9,7 @@ Webserver for the Powered Plants project
 - Users send info in the format: `{"id":"hq-plant", "action":"water", "value":1}`
 - Users receive info in the format: `{"id":"hq-plant", "data":{"sT":26.37,"eH":54.80,"eT":26.40,"lT":4036,"lI":637,"sH":16}}`
 - Plants send info in the format: `{"id":"hq-plant", "data":{"sT":26.37,"eH":54.80,"eT":26.40,"lT":4036,"lI":637,"sH":16}}`
-- Plants receive info in the format: `{"action":"water","value":1}`
+- Plants receive info in the format: `waterON`
 
 ## Json data
 - SoilTemperature float32 `sT`

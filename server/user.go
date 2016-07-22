@@ -33,10 +33,17 @@ func (user *User) ReceiveMessages() {
 			Action: command.Action,
 			Value: command.Value,
 		}
-		request, _ := json.Marshal(control)
+
+		var request string
+		if control.Value == 1{
+			request = control.Action + "ON"
+		}
+		if control.Value == 0 {
+			request = control.Action + "OFF"
+		}
 
 		if flower, ok := user.Garden.Flowers[command.Flower]; ok {
-			flower.Send<- request
+			flower.Send <- []byte(request)
 		}
 	}
 }
