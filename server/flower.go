@@ -5,7 +5,7 @@ import (
 )
 
 type Flower struct {
-	Conn websocket.Conn
+	Conn *websocket.Conn
 	Garden *Garden
 	Hub *Hub
 	Send chan []byte
@@ -21,7 +21,7 @@ func (flower *Flower) ReceiveMessages() {
 	for {
 		_, msg, err := flower.Conn.ReadMessage()
 		if err != nil {
-			return nil, err
+			return
 		}
 		//payload := Payload{}
 		//json.Unmarshal([]byte(msg), &payload)

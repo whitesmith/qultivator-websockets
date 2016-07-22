@@ -1,5 +1,7 @@
 package main
 
+import "log"
+
 type Garden struct {
 	Flowers map[*Flower]bool
 	Register chan *Flower
@@ -20,13 +22,16 @@ func (g *Garden) run() {
 	for {
 		select {
 		case flower := <-g.Register:
+			log.Println("[Garden] Registered flower")
 			g.Flowers[flower] = true
 		case flower := <-g.Unregister:
+			log.Println("[Garden] Unregistered flower")
 			if _, ok := g.Flowers[flower]; ok {
 				delete(g.Flowers, flower)
 				close(flower.Send)
 			}
 		case message := <-g.broadcast:
+			log.Printf("[Garden] Broadcast message: %s", message)
 			for client := range g.Flowers {
 				select {
 				case client.Send <- message:

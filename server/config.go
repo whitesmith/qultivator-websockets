@@ -8,15 +8,13 @@ type Config struct {
 	HostPort	string
 }
 
-var config = Config{}
-
-func InitConfig() {
-	config = Config{}
-
+func InitConfig() *Config {
 	// Connection config
 	HostPort, exists := os.LookupEnv("HOST_PORT")
 	if exists == false {
 		HostPort = "8080"
 	}
-	config.HostPort = HostPort
+	return &Config{
+		HostPort: HostPort,
+	}
 }

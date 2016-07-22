@@ -2,12 +2,13 @@ package main
 
 import (
 	"github.com/gorilla/websocket"
+	"log"
 )
 
 type User struct {
-	Conn websocket.Conn
-	Hub *Hub
+	Conn *websocket.Conn
 	Garden *Garden
+	Hub *Hub
 	Send chan []byte
 }
 
@@ -21,7 +22,7 @@ func (user *User) ReceiveMessages() {
 	for {
 		_, msg, err := user.Conn.ReadMessage()
 		if err != nil {
-			return nil, err
+			return
 		}
 		//payload := Payload{}
 		//json.Unmarshal([]byte(msg), &payload)
@@ -36,6 +37,7 @@ func (user *User) SendMessages()  {
 	for {
 		select {
 		case message, ok := <-user.Send:
+			log.Printf("[User] Message received: %s", message)
 			if !ok {
 				user.write(websocket.CloseMessage, []byte{})
 				return

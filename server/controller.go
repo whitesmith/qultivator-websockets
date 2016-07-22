@@ -23,8 +23,8 @@ func ConnectFlower(garden *Garden, hub *Hub, w http.ResponseWriter, r *http.Requ
 
 	flower := &Flower{Hub: hub, Garden: garden, Conn: conn, Send: make(chan []byte, 256)}
 	flower.Garden.Register <- flower
-	flower.ReceiveMessages()
 	go flower.SendMessages()
+	flower.ReceiveMessages()
 }
 
 func ConnectUser(garden *Garden, hub *Hub, w http.ResponseWriter, r *http.Request) {
@@ -36,6 +36,6 @@ func ConnectUser(garden *Garden, hub *Hub, w http.ResponseWriter, r *http.Reques
 
 	user := &User{Hub: hub, Garden: garden, Conn: conn, Send: make(chan []byte, 256)}
 	user.Hub.Register <- user
-	user.ReceiveMessages()
 	go user.SendMessages()
+	user.ReceiveMessages()
 }

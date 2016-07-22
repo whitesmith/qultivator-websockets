@@ -8,7 +8,7 @@ import (
 )
 
 var origin = "http://localhost/"
-var url = "ws://localhost:8080/"
+var url = "ws://localhost:8080/flower"
 
 func main() {
 	ws, err := websocket.Dial(url, "", origin)
@@ -22,13 +22,4 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("[Sent] %s\n", message)
-
-	/*
-		var msg = make([]byte, 512)
-		_, err = ws.Read(msg)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("[Received] %s\n", msg)
-	*/
 }

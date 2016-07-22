@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	config = InitConfig()
+	config := InitConfig()
 	garden := InitGarden()
 	hub := InitHub()
 	go garden.run()
@@ -17,7 +17,7 @@ func main() {
 		ConnectFlower(garden, hub, w, r)
 	})
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		ConnectFlower(garden, hub, w, r)
+		ConnectUser(garden, hub, w, r)
 	})
 	err := http.ListenAndServe(":" + config.HostPort, nil)
 	if err != nil {
