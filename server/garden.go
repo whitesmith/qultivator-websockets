@@ -11,7 +11,7 @@ type Garden struct {
 
 func InitGarden() *Garden {
 	return &Garden{
-		Flowers:    make(map[*Flower]bool),
+		Flowers:    make(map[string]*Flower),
 		Register:   make(chan *Flower),
 		Unregister: make(chan *Flower),
 		broadcast:  make(chan []byte),
@@ -23,21 +23,20 @@ func (g *Garden) run() {
 		select {
 		case flower := <-g.Register:
 			log.Println("[Garden] Registered flower")
-			g.Flowers[flower] = true
+			g.Flowers[flower.Id] = flower
 		case flower := <-g.Unregister:
 			log.Println("[Garden] Unregistered flower")
-			if _, ok := g.Flowers[flower]; ok {
-				delete(g.Flowers, flower)
-				close(flower.Send)
-			}
+			delete(g.Flowers, flower.Id)
+			close(flower.Send)
 		case message := <-g.broadcast:
 			log.Printf("[Garden] Broadcast message: %s", message)
 			for client := range g.Flowers {
+				log.Printf("[Garden] client: %+v", client)
 				select {
 				case client.Send <- message:
 				default:
 					close(client.Send)
-					delete(g.Flowers, client)
+					delete(g.Flowers, client.Id)
 				}
 			}
 		}

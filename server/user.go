@@ -3,6 +3,9 @@ package main
 import (
 	"github.com/gorilla/websocket"
 	"log"
+	"github.com/whitesmith/powered-plants-web/server/models"
+	"encoding/json"
+	"fmt"
 )
 
 type User struct {
@@ -11,7 +14,6 @@ type User struct {
 	Hub *Hub
 	Send chan []byte
 }
-
 
 func (user *User) ReceiveMessages() {
 	defer func() {
@@ -26,6 +28,8 @@ func (user *User) ReceiveMessages() {
 		}
 		//payload := Payload{}
 		//json.Unmarshal([]byte(msg), &payload)
+
+		msg = user.commands(msg)
 		user.Garden.broadcast <- msg
 	}
 }
@@ -63,4 +67,18 @@ func (user *User) SendMessages()  {
 
 func (user *User) write(mt int, payload []byte) error {
 	return user.Conn.WriteMessage(mt, payload)
+}
+
+
+func (user *User) commands(msg []byte) []byte {
+	command := models.Command{}
+	json.Unmarshal([]byte(msg), &command)
+
+	control := models.Control{
+		Action: command.Action,
+		Value: command.Value,
+	}
+
+	request, _ := json.Marshal(control)
+	return request
 }

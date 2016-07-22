@@ -5,6 +5,7 @@ import (
 )
 
 type Flower struct {
+	Id string
 	Conn *websocket.Conn
 	Garden *Garden
 	Hub *Hub
