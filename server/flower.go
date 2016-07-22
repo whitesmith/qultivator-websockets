@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/gorilla/websocket"
+	"encoding/json"
+	"github.com/whitesmith/powered-plants-web/server/models"
 )
 
 type Flower struct {
@@ -25,8 +27,14 @@ func (flower *Flower) ReceiveMessages() {
 		if err != nil {
 			return
 		}
-		//payload := Payload{}
-		//json.Unmarshal([]byte(msg), &payload)
+		payload := models.Payload{}
+		json.Unmarshal([]byte(msg), &payload)
+
+		if flower.Id != payload.Id {
+			flower.Id = payload.Id
+			flower.Garden.Register <- flower
+		}
+
 		flower.State = msg
 		flower.Hub.broadcast <- msg
 	}

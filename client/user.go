@@ -22,4 +22,11 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("[Received] %s\n", msg)
+
+	message := []byte(`{"id":"hq-plant", "action":"water", "value":1}`)
+	_, err = ws.Write(message)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("[Sent] %s\n", message)
 }

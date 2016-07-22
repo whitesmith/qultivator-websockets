@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"golang.org/x/net/websocket"
-	"time"
 )
 
 var origin = "http://localhost/"
@@ -17,18 +16,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	message := []byte(`{"sT":26.37,"eH":54.80,"eT":26.40,"lT":4036,"lI":637,"sH":16}`)
+	message := []byte(`{"id":"hq-plants", "data":{"sT":26.37,"eH":54.80,"eT":26.40,"lT":4036,"lI":637,"sH":16}}`)
 	_, err = ws.Write(message)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("[Sent] %s\n", message)
 
-	time.Sleep(time.Second * 20)
-
-	_, err = ws.Write(message)
+	var msg = make([]byte, 512)
+	_, err = ws.Read(msg)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("[Sent] %s\n", message)
+	fmt.Printf("[Received] %s\n", msg)
 }

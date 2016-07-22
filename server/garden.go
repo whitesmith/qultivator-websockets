@@ -3,7 +3,7 @@ package main
 import "log"
 
 type Garden struct {
-	Flowers map[*Flower]bool
+	Flowers map[string]*Flower
 	Register chan *Flower
 	Unregister chan *Flower
 	broadcast chan []byte
@@ -30,8 +30,7 @@ func (g *Garden) run() {
 			close(flower.Send)
 		case message := <-g.broadcast:
 			log.Printf("[Garden] Broadcast message: %s", message)
-			for client := range g.Flowers {
-				log.Printf("[Garden] client: %+v", client)
+			for _, client := range g.Flowers {
 				select {
 				case client.Send <- message:
 				default:

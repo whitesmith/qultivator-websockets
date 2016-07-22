@@ -9,5 +9,5 @@ type Payload struct {
 	       EnvironmentTemperature float32 `json:"eT,omitempty" form:"eT"`
 	       LightTemperature float32 `json:"lT,omitempty" form:"lT"`
 	       LightIntensity float32 `json:"lI,omitempty" form:"lI"`
-        } `json:"state" form:"state"`
+        } `json:"data" form:"data"`
 }

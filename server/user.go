@@ -5,7 +5,6 @@ import (
 	"log"
 	"github.com/whitesmith/powered-plants-web/server/models"
 	"encoding/json"
-	"fmt"
 )
 
 type User struct {
@@ -26,11 +25,19 @@ func (user *User) ReceiveMessages() {
 		if err != nil {
 			return
 		}
-		//payload := Payload{}
-		//json.Unmarshal([]byte(msg), &payload)
 
-		msg = user.commands(msg)
-		user.Garden.broadcast <- msg
+		command := models.Command{}
+		json.Unmarshal([]byte(msg), &command)
+
+		control := models.Control{
+			Action: command.Action,
+			Value: command.Value,
+		}
+		request, _ := json.Marshal(control)
+
+		if flower, ok := user.Garden.Flowers[command.Flower]; ok {
+			flower.Send<- request
+		}
 	}
 }
 
@@ -67,18 +74,4 @@ func (user *User) SendMessages()  {
 
 func (user *User) write(mt int, payload []byte) error {
 	return user.Conn.WriteMessage(mt, payload)
-}
-
-
-func (user *User) commands(msg []byte) []byte {
-	command := models.Command{}
-	json.Unmarshal([]byte(msg), &command)
-
-	control := models.Control{
-		Action: command.Action,
-		Value: command.Value,
-	}
-
-	request, _ := json.Marshal(control)
-	return request
 }
