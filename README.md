@@ -1,5 +1,5 @@
 # Qultivator
-Qultivator was a project built under 32h on Whitesmith's Hackathon.
+Qultivator was a project built under 32h on the July's Whitesmith Hackathon.
 
 ## Qultivator Websockets Server
 Webserver for the websockets connection on the Qultivator project
