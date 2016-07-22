@@ -37,5 +37,9 @@ func ConnectUser(garden *Garden, hub *Hub, w http.ResponseWriter, r *http.Reques
 	user := &User{Hub: hub, Garden: garden, Conn: conn, Send: make(chan []byte, 256)}
 	user.Hub.Register <- user
 	go user.SendMessages()
+
+	for flower := range user.Garden.Flowers {
+		user.Send <- flower.State
+	}
 	user.ReceiveMessages()
 }

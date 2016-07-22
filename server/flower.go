@@ -9,6 +9,7 @@ type Flower struct {
 	Garden *Garden
 	Hub *Hub
 	Send chan []byte
+	State []byte
 }
 
 
@@ -25,6 +26,7 @@ func (flower *Flower) ReceiveMessages() {
 		}
 		//payload := Payload{}
 		//json.Unmarshal([]byte(msg), &payload)
+		flower.State = msg
 		flower.Hub.broadcast <- msg
 	}
 }

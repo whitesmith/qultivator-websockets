@@ -26,9 +26,7 @@ func (g *Hub) run() {
 		case user := <-g.Register:
 			log.Println("[Hub] Registered user")
 			g.Users[user] = true
-			log.Printf("%+v", g.Users)
 		case user := <-g.Unregister:
-			log.Printf("%+v", g.Users)
 			log.Println("[Hub] Unregistered user")
 			if _, ok := g.Users[user]; ok {
 				delete(g.Users, user)
@@ -39,7 +37,6 @@ func (g *Hub) run() {
 			for client := range g.Users {
 				select {
 				case client.Send <- message:
-					log.Println("[Hub] Message sent")
 				default:
 					close(client.Send)
 					delete(g.Users, client)
