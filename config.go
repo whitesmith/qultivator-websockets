@@ -1,4 +1,4 @@
-package config
+package main
 
 import (
 	"os"
@@ -10,7 +10,7 @@ type Config struct {
 
 var config = Config{}
 
-func Init() {
+func InitConfig() {
 	config = Config{}
 
 	// Connection config
@@ -19,11 +19,4 @@ func Init() {
 		HostPort = "8080"
 	}
 	config.HostPort = HostPort
-}
-
-func Get() Config {
-	if &config == nil {
-		Init()
-	}
-	return config
 }

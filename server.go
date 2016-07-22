@@ -3,17 +3,24 @@ package main
 import (
 	"log"
 	"net/http"
-	"github.com/codegangsta/negroni"
-	"github.com/whitesmith/powered-plants-web/config"
-	"github.com/whitesmith/powered-plants-web/routers"
 )
 
 func main() {
-	config.Init()
-	router := routers.InitRoutes()
-	server := negroni.Classic()
-	server.UseHandler(router)
+	config = InitConfig()
+	garden := InitGarden()
+	hub := InitHub()
+	go garden.run()
+	go hub.run()
 
-	log.Printf("Listening on port: " + config.Get().HostPort)
-	http.ListenAndServe(":" + config.Get().HostPort, server)
+	log.Printf("Listening on port: " + config.HostPort)
+	http.HandleFunc("/flower", func(w http.ResponseWriter, r *http.Request) {
+		ConnectFlower(garden, hub, w, r)
+	})
+	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		ConnectFlower(garden, hub, w, r)
+	})
+	err := http.ListenAndServe(":" + config.HostPort, nil)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 }

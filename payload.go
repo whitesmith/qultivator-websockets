@@ -1,4 +1,4 @@
-package models
+package main
 
 type Payload struct {
 	SoilTemperature float32 `json:"sT,omitempty" form:"sT"`
