@@ -16,7 +16,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	message := []byte(`{"id":"hq-plants", "data":{"sT":26.37,"eH":54.80,"eT":26.40,"lT":4036,"lI":637,"sH":16}}`)
+	message := []byte(`{"id":"hq-plant", "data":{"sT":26.37,"eH":54.80,"eT":26.40,"lT":4036,"lI":637,"sH":16}}`)
 	_, err = ws.Write(message)
 	if err != nil {
 		log.Fatal(err)
