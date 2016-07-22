@@ -5,7 +5,9 @@ It is a IoT project that allows plants to be individually monitored and taken ca
 Several environmental data can be gathered using sensors, and both a light and irrigation system can be controlled in real-time using the Qultivator website.
 
 ## Qultivator Websockets Server
-Webserver for the websockets connection on the Qultivator project
+Webserver for the websockets connection on the Qultivator project.
+
+This repository includes example client applications for communication testing and the server implementation, which connects plant websockets and user websockets, enabling bi-directional real-time comunication between users and plants.
 
 ### Endpoints
 - `/flower` to establish plant connection
