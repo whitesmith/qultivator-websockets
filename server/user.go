@@ -42,7 +42,9 @@ func (user *User) ReceiveMessages() {
 			request = control.Action + "OFF"
 		}
 
+		log.Printf("[Flower] Sending %s", request)
 		if flower, ok := user.Garden.Flowers[command.Flower]; ok {
+			log.Printf("%s", request)
 			flower.Send <- []byte(request)
 		}
 	}
